@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import TipCard from "./TipCard";
+import { fetchBTTSPicksFromSportMonks } from "@/services/bttsApiService";
 
 interface Tip {
   id: string;
@@ -37,224 +38,95 @@ const TipsFeed = ({
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock data for demonstration
-  const mockTips: Tip[] = [
-    {
-      id: "1",
-      matchTitle: "Premier League",
-      teams: {
-        home: "Arsenal",
-        away: "Manchester United",
-      },
-      league: "Premier League",
-      sport: "Football",
-      date: "2023-06-15",
-      time: "15:00",
-      odds: {
-        value: 1.85,
-        movement: "up",
-      },
-      confidence: 85,
-      prediction: "Home Win",
-      recommended: true,
-    },
-    {
-      id: "2",
-      matchTitle: "La Liga",
-      teams: {
-        home: "Barcelona",
-        away: "Real Madrid",
-      },
-      league: "La Liga",
-      sport: "Football",
-      date: "2023-06-16",
-      time: "20:00",
-      odds: {
-        value: 2.1,
-        movement: "down",
-      },
-      confidence: 70,
-      prediction: "Draw",
-      recommended: false,
-    },
-    {
-      id: "3",
-      matchTitle: "NBA Playoffs",
-      teams: {
-        home: "Boston Celtics",
-        away: "Miami Heat",
-      },
-      league: "NBA",
-      sport: "Basketball",
-      date: "2023-06-15",
-      time: "19:30",
-      odds: {
-        value: 1.65,
-        movement: "stable",
-      },
-      confidence: 90,
-      prediction: "Over 210.5 Points",
-      recommended: true,
-    },
-    {
-      id: "4",
-      matchTitle: "Serie A",
-      teams: {
-        home: "Juventus",
-        away: "AC Milan",
-      },
-      league: "Serie A",
-      sport: "Football",
-      date: "2023-06-17",
-      time: "18:45",
-      odds: {
-        value: 1.95,
-        movement: "up",
-      },
-      confidence: 75,
-      prediction: "Away Win",
-      recommended: false,
-    },
-    {
-      id: "5",
-      matchTitle: "Bundesliga",
-      teams: {
-        home: "Bayern Munich",
-        away: "Borussia Dortmund",
-      },
-      league: "Bundesliga",
-      sport: "Football",
-      date: "2023-06-18",
-      time: "17:30",
-      odds: {
-        value: 1.55,
-        movement: "down",
-      },
-      confidence: 88,
-      prediction: "Home Win & Over 2.5",
-      recommended: true,
-    },
-    {
-      id: "6",
-      matchTitle: "ATP French Open",
-      teams: {
-        home: "Rafael Nadal",
-        away: "Novak Djokovic",
-      },
-      league: "ATP",
-      sport: "Tennis",
-      date: "2023-06-16",
-      time: "14:00",
-      odds: {
-        value: 2.25,
-        movement: "stable",
-      },
-      confidence: 65,
-      prediction: "Over 3.5 Sets",
-      recommended: false,
-    },
-  ];
-
-  // Simulate fetching data with filters
+  // Fetch data from real API
   useEffect(() => {
     setLoading(true);
     setPage(1);
+    setError(null);
 
-    // Simulate API call with delay
-    const timer = setTimeout(() => {
-      let filteredTips = [...mockTips];
+    const fetchData = async () => {
+      try {
+        // Fetch real data from SportMonks API
+        const bttsData = await fetchBTTSPicksFromSportMonks();
 
-      // Apply filters
-      if (sportFilter !== "all") {
-        filteredTips = filteredTips.filter((tip) => tip.sport === sportFilter);
-      }
-
-      if (leagueFilter !== "all") {
-        filteredTips = filteredTips.filter(
-          (tip) => tip.league === leagueFilter,
-        );
-      }
-
-      if (timeFrameFilter !== "all") {
-        // Simple time frame filter for demo purposes
-        const today = new Date().toISOString().split("T")[0];
-        if (timeFrameFilter === "today") {
-          filteredTips = filteredTips.filter((tip) => tip.date === today);
-        } else if (timeFrameFilter === "tomorrow") {
-          const tomorrow = new Date();
-          tomorrow.setDate(tomorrow.getDate() + 1);
-          const tomorrowStr = tomorrow.toISOString().split("T")[0];
-          filteredTips = filteredTips.filter((tip) => tip.date === tomorrowStr);
+        if (!bttsData.games.length) {
+          setError("No tips available. Please try again later.");
+          setTips([]);
+          setHasMore(false);
+          setLoading(false);
+          return;
         }
-      }
 
-      setTips(filteredTips);
-      setHasMore(filteredTips.length >= 6); // For demo, assume more if we have 6 or more
-      setLoading(false);
-    }, 800);
+        // Transform BTTS data to Tip format
+        const transformedTips: Tip[] = bttsData.games.map(
+          (game, index) => ({
+            id: `btts-${index}`,
+            matchTitle: `${game.home} vs ${game.away}`,
+            teams: {
+              home: game.home,
+              away: game.away,
+            },
+            league: "Premier League", // This could be improved with more data from API
+            sport: "Football",
+            date: new Date().toISOString().split("T")[0], // Today's date
+            time: game.kickoff,
+            odds: {
+              value: 1 / (game.probability / 100), // Convert probability to odds
+              movement: Math.random() > 0.5 ? "up" : "down", // Random movement
+            },
+            confidence: game.probability,
+            prediction: "Both Teams To Score",
+            recommended: game.probability > 70, // Recommend if high probability
+          })
+        );
 
-    return () => clearTimeout(timer);
-  }, [sportFilter, leagueFilter, timeFrameFilter]);
-
-  // Load more function for infinite scroll
-  const loadMore = () => {
-    if (loading || !hasMore) return;
-
-    setLoading(true);
-
-    // Simulate loading more data
-    setTimeout(() => {
-      // In a real app, you would fetch the next page of data
-      // For demo, we'll just duplicate existing tips with new IDs
-      const newTips = tips.map((tip) => ({
-        ...tip,
-        id: `${tip.id}-${page}`,
-      }));
-
-      setTips([...tips, ...newTips]);
-      setPage(page + 1);
-      setHasMore(page < 3); // Limit to 3 pages for demo
-      setLoading(false);
-    }, 800);
-  };
-
-  // Detect when user scrolls near bottom to trigger loadMore
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop >=
-          document.documentElement.offsetHeight - 500 &&
-        !loading &&
-        hasMore
-      ) {
-        loadMore();
+        setTips(transformedTips);
+        setHasMore(false); // No pagination for now with real data
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching tips:", error);
+        setError("Failed to fetch tips. Please try again later.");
+        setTips([]);
+        setHasMore(false);
+        setLoading(false);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [loading, hasMore]);
+    fetchData();
+  }, [sportFilter, leagueFilter, timeFrameFilter]);
+
+  // Load more function for infinite scroll (currently not used with real data)
+  const loadMore = () => {
+    if (loading || !hasMore) return;
+    setLoading(true);
+
+    // With real data, you would implement pagination here
+    setLoading(false);
+  };
 
   return (
-    <div className="w-full bg-background">
-      <div className="container mx-auto px-4 py-6">
+    <div className="bg-background w-full">
+      <div className="container px-4 py-6 mx-auto">
         {/* Tips count and sorting */}
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold">
             {tips.length} Betting Tips Available
           </h2>
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-muted-foreground">Sort by:</span>
-            <button className="flex items-center text-sm font-medium bg-secondary px-3 py-1 rounded-md">
-              Confidence <ChevronDown className="ml-1 h-4 w-4" />
+            <span className="text-muted-foreground text-sm">
+              Sort by:
+            </span>
+            <button className="bg-secondary flex items-center px-3 py-1 text-sm font-medium rounded-md">
+              Confidence <ChevronDown className="w-4 h-4 ml-1" />
             </button>
           </div>
         </div>
 
         {/* Tips grid */}
         {loading && tips.length === 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="md:grid-cols-2 lg:grid-cols-3 grid grid-cols-1 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={i}
@@ -262,15 +134,39 @@ const TipsFeed = ({
               />
             ))}
           </div>
+        ) : error ? (
+          <div className="py-12 text-center">
+            <h3 className="text-lg font-medium">
+              Error Loading Tips
+            </h3>
+            <p className="text-muted-foreground mt-2">{error}</p>
+          </div>
         ) : tips.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="md:grid-cols-2 lg:grid-cols-3 grid grid-cols-1 gap-6">
             {tips.map((tip) => (
-              <TipCard key={tip.id} tip={tip} />
+              <TipCard
+                key={tip.id}
+                matchTitle={tip.matchTitle}
+                teams={tip.teams}
+                league={tip.league}
+                sportType={tip.sport}
+                date={tip.date}
+                time={tip.time}
+                odds={{
+                  value: tip.odds.value.toFixed(2),
+                  movement: tip.odds.movement,
+                }}
+                confidenceRating={tip.confidence}
+                tipType={tip.prediction}
+                isRecommended={tip.recommended}
+              />
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <h3 className="text-lg font-medium">No tips match your filters</h3>
+          <div className="py-12 text-center">
+            <h3 className="text-lg font-medium">
+              No tips match your filters
+            </h3>
             <p className="text-muted-foreground mt-2">
               Try adjusting your filters to see more results
             </p>
@@ -280,7 +176,7 @@ const TipsFeed = ({
         {/* Loading indicator */}
         {loading && tips.length > 0 && (
           <div className="flex justify-center mt-8">
-            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+            <div className="border-primary border-t-transparent animate-spin w-8 h-8 border-4 rounded-full" />
           </div>
         )}
 
@@ -289,7 +185,7 @@ const TipsFeed = ({
           <div className="flex justify-center mt-8">
             <button
               onClick={loadMore}
-              className="px-6 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2 transition-colors rounded-md"
             >
               Load More Tips
             </button>
@@ -298,7 +194,7 @@ const TipsFeed = ({
 
         {/* End of results message */}
         {!loading && !hasMore && tips.length > 0 && (
-          <div className="text-center mt-8 text-muted-foreground">
+          <div className="text-muted-foreground mt-8 text-center">
             You've reached the end of the tips
           </div>
         )}

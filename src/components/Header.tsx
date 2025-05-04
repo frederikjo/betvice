@@ -15,7 +15,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-background sticky top-0 z-10 p-4 border-b shadow-sm">
+      <header className="brounded-xl border bg-card text-card-foreground fixed bottom-4 right-4 shadow-lg z-50 w-80 h-96 md:w-96 md:h-[450px]g-background sticky top-0 z-10 p-4 border-b shadow-sm">
         <div className="container flex items-center justify-between mx-auto">
           <h1 className="text-primary text-2xl font-bold">
             Betting Tips

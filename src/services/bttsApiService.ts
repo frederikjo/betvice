@@ -1,42 +1,26 @@
 import { BTTSGame } from "@/lib/types";
 
-// Mock data as fallback
-const mockBTTSGames: BTTSGame[] = [
-  {
-    home: "Arsenal",
-    away: "Manchester United",
-    kickoff: "15:00",
-    probability: 75.5,
-  },
-  {
-    home: "Barcelona",
-    away: "Real Madrid",
-    kickoff: "20:00",
-    probability: 82.3,
-  },
-];
-
 /**
- * Direct implementation to fetch BTTS picks from SportMonks API
+ * Fetch BTTS picks from SportMonks API via proxy
  */
 export async function fetchBTTSPicksFromSportMonks(): Promise<{
   games: BTTSGame[];
 }> {
-  // Get your SportMonks API token from environment or config
+  // Get your SportMonks API token from environment variable
   const API_TOKEN = import.meta.env.VITE_SPORTMONKS_TOKEN;
 
   if (!API_TOKEN) {
     console.error(
       "SportMonks API token is missing! Add VITE_SPORTMONKS_TOKEN to your .env file"
     );
-    return { games: mockBTTSGames };
+    return { games: [] };
   }
 
   try {
-    // Create the exact URL you want to call
-    const url = `https://api.sportmonks.com/v3/football/rounds/339269?include=fixtures.odds.market;fixtures.odds.bookmaker;fixtures.participants;league.country&filters=markets:14;bookmakers:2&api_token=${API_TOKEN}`;
+    // Use the proxy URL (configured in vite.config.ts)
+    const url = `/api/sportmonks/football/rounds/339269?include=fixtures.odds.market;fixtures.odds.bookmaker;fixtures.participants;league.country&filters=markets:14;bookmakers:2&api_token=${API_TOKEN}`;
 
-    console.log("Calling SportMonks API directly...");
+    console.log("Calling SportMonks API via proxy...");
 
     // Make the API call
     const response = await fetch(url);
@@ -60,7 +44,7 @@ export async function fetchBTTSPicksFromSportMonks(): Promise<{
       console.warn(
         "No fixtures found in the SportMonks API response"
       );
-      return { games: mockBTTSGames };
+      return { games: [] };
     }
 
     console.log(`Found ${fixtures.length} fixtures in the response`);
@@ -145,12 +129,10 @@ export async function fetchBTTSPicksFromSportMonks(): Promise<{
       `Successfully processed ${bttsGames.length} BTTS games`
     );
 
-    // Return the processed games, or fallback to mock data if none found
-    return {
-      games: bttsGames.length > 0 ? bttsGames : mockBTTSGames,
-    };
+    // Return the processed games
+    return { games: bttsGames };
   } catch (error) {
     console.error("Error fetching from SportMonks:", error);
-    return { games: mockBTTSGames };
+    return { games: [] };
   }
 }

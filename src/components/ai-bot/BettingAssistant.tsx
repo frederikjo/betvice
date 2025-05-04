@@ -44,12 +44,14 @@ const BettingAssistant = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      content: "Hi! I'm your betting assistant. Ask me anything.",
+      content:
+        "Hi! I'm your betting assistant. Ask me anything about today's matches or BTTS predictions!",
       sender: "bot",
       timestamp: new Date(),
     },
   ]);
   const [copiedMessageId, setCopiedMessageId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -86,6 +88,7 @@ const BettingAssistant = () => {
 
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
+    setIsLoading(true);
 
     // Add "Bot is typing..." message
     const botTypingMessage = {
@@ -97,16 +100,37 @@ const BettingAssistant = () => {
 
     setMessages((prev) => [...prev, botTypingMessage]);
 
-    // Detect intent and run handler
-    const intent = detectIntent(text);
-    const response = await botResponseHandlers[intent]();
+    try {
+      // Detect intent and run handler
+      const intent = detectIntent(text);
+      const response = await botResponseHandlers[intent]();
 
-    // Replace typing message with real bot response
-    setMessages((prev) =>
-      prev.map((m) =>
-        m.id === botTypingMessage.id ? { ...m, content: response } : m
-      )
-    );
+      // Replace typing message with real bot response
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === botTypingMessage.id
+            ? { ...m, content: response }
+            : m
+        )
+      );
+    } catch (error) {
+      console.error("Error processing message:", error);
+
+      // Replace typing message with error message
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === botTypingMessage.id
+            ? {
+                ...m,
+                content:
+                  "Sorry, I encountered an error. Please try again later.",
+              }
+            : m
+        )
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleCopyMessage = (content) => {
@@ -226,11 +250,15 @@ const BettingAssistant = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) =>
-                e.key === "Enter" && handleSendMessage()
+                e.key === "Enter" && !isLoading && handleSendMessage()
               }
               ref={inputRef}
+              disabled={isLoading}
             />
-            <Button onClick={() => handleSendMessage()}>
+            <Button
+              onClick={() => handleSendMessage()}
+              disabled={isLoading}
+            >
               <Send className="w-4 h-4 mr-1" />
               Send
             </Button>

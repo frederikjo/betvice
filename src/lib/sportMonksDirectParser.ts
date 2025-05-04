@@ -11,6 +11,7 @@ export function processSportMonksData(data: any): {
 } {
   const bttsGames: BTTSGame[] = [];
 
+  console.log("bttsGames", bttsGames, data);
   try {
     // Check if fixtures exist in the response
     if (!data.fixtures || !Array.isArray(data.fixtures)) {
@@ -18,6 +19,9 @@ export function processSportMonksData(data: any): {
       return { games: bttsGames };
     }
 
+    console.log(
+      `Found ${data.fixtures.length} fixtures in the response`
+    );
     // Process each fixture
     for (const fixture of data.fixtures) {
       try {
