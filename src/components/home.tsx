@@ -1,0 +1,149 @@
+import React, { useState } from "react";
+import { Sun, Moon } from "lucide-react";
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
+import FilterPanel from "./FilterPanel";
+import TipsSection from "./home/TipsSection";
+import PerformanceSection from "./home/PerformanceSection";
+
+const Home = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    // In a real implementation, this would update the theme in the document
+    // document.documentElement.classList.toggle('dark');
+  };
+
+  return (
+    <div
+      className={`min-h-screen w-full bg-background ${isDarkMode ? "dark" : ""}`}
+    >
+      <header className="sticky top-0 z-10 border-b bg-background p-4 shadow-sm">
+        <div className="container mx-auto flex items-center justify-between">
+          <h1 className="text-2xl font-bold text-primary">Betting Tips</h1>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+          >
+            {isDarkMode ? (
+              <Sun className="h-5 w-5" />
+            ) : (
+              <Moon className="h-5 w-5" />
+            )}
+          </Button>
+        </div>
+      </header>
+
+      <main className="container mx-auto py-6 px-4">
+        <section className="mb-8">
+          <h2 className="mb-4 text-xl font-semibold">Today's Betting Tips</h2>
+          <Card className="p-4">
+            <FilterPanel
+              onFilterChange={() => {}}
+              sportTypes={[
+                "Football",
+                "Basketball",
+                "Tennis",
+                "Hockey",
+                "Baseball",
+              ]}
+              leagues={["Premier League", "NBA", "ATP", "NHL", "MLB"]}
+              timeFrames={["Today", "Tomorrow", "This Week"]}
+            />
+          </Card>
+        </section>
+
+        <PerformanceSection
+          successRate={68}
+          winLossRatio="34-16"
+          profitMargin="+12.5%"
+          timePeriods={["Last Week", "Last Month", "Last 3 Months", "All Time"]}
+        />
+
+        <TipsSection
+          tips={[
+            {
+              id: "1",
+              matchDetails: "Manchester United vs Liverpool",
+              sportType: "Football",
+              league: "Premier League",
+              tipType: "Over 2.5 Goals",
+              odds: 1.85,
+              confidence: 85,
+              time: "20:00",
+              date: "2023-05-15",
+            },
+            {
+              id: "2",
+              matchDetails: "Lakers vs Warriors",
+              sportType: "Basketball",
+              league: "NBA",
+              tipType: "Warriors to win",
+              odds: 2.1,
+              confidence: 75,
+              time: "19:30",
+              date: "2023-05-15",
+            },
+            {
+              id: "3",
+              matchDetails: "Djokovic vs Nadal",
+              sportType: "Tennis",
+              league: "ATP",
+              tipType: "Nadal to win",
+              odds: 2.5,
+              confidence: 65,
+              time: "14:00",
+              date: "2023-05-16",
+            },
+            {
+              id: "4",
+              matchDetails: "Bruins vs Maple Leafs",
+              sportType: "Hockey",
+              league: "NHL",
+              tipType: "Under 5.5 Goals",
+              odds: 1.95,
+              confidence: 70,
+              time: "19:00",
+              date: "2023-05-16",
+            },
+            {
+              id: "5",
+              matchDetails: "Yankees vs Red Sox",
+              sportType: "Baseball",
+              league: "MLB",
+              tipType: "Yankees -1.5",
+              odds: 2.2,
+              confidence: 80,
+              time: "18:00",
+              date: "2023-05-17",
+            },
+            {
+              id: "6",
+              matchDetails: "Arsenal vs Chelsea",
+              sportType: "Football",
+              league: "Premier League",
+              tipType: "Both Teams to Score",
+              odds: 1.75,
+              confidence: 90,
+              time: "16:30",
+              date: "2023-05-17",
+            },
+          ]}
+        />
+      </main>
+
+      <footer className="border-t bg-background p-4 text-center text-sm text-muted-foreground">
+        <div className="container mx-auto">
+          <p>
+            © {new Date().getFullYear()} Betting Tips App. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Home;
