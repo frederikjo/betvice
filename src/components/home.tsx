@@ -17,11 +17,15 @@ const Home = () => {
 
   return (
     <div
-      className={`min-h-screen w-full bg-background ${isDarkMode ? "dark" : ""}`}
+      className={`min-h-screen w-full bg-background ${
+        isDarkMode ? "dark" : ""
+      }`}
     >
-      <header className="sticky top-0 z-10 border-b bg-background p-4 shadow-sm">
-        <div className="container mx-auto flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-primary">Betting Tips</h1>
+      <header className="bg-background sticky top-0 z-10 p-4 border-b shadow-sm">
+        <div className="container flex items-center justify-between mx-auto">
+          <h1 className="text-primary text-2xl font-bold">
+            Betting Tips
+          </h1>
           <Button
             variant="ghost"
             size="icon"
@@ -29,17 +33,19 @@ const Home = () => {
             aria-label="Toggle theme"
           >
             {isDarkMode ? (
-              <Sun className="h-5 w-5" />
+              <Sun className="w-5 h-5" />
             ) : (
-              <Moon className="h-5 w-5" />
+              <Moon className="w-5 h-5" />
             )}
           </Button>
         </div>
       </header>
 
-      <main className="container mx-auto py-6 px-4">
+      <main className="container px-4 py-6 mx-auto">
         <section className="mb-8">
-          <h2 className="mb-4 text-xl font-semibold">Today's Betting Tips</h2>
+          <h2 className="mb-4 text-xl font-semibold">
+            Today's Betting Tips
+          </h2>
           <Card className="p-4">
             <FilterPanel
               onFilterChange={() => {}}
@@ -60,7 +66,12 @@ const Home = () => {
           successRate={68}
           winLossRatio="34-16"
           profitMargin="+12.5%"
-          timePeriods={["Last Week", "Last Month", "Last 3 Months", "All Time"]}
+          timePeriods={[
+            "Last Week",
+            "Last Month",
+            "Last 3 Months",
+            "All Time",
+          ]}
         />
 
         <TipsSection
@@ -135,10 +146,11 @@ const Home = () => {
         />
       </main>
 
-      <footer className="border-t bg-background p-4 text-center text-sm text-muted-foreground">
+      <footer className="bg-background text-muted-foreground p-4 text-sm text-center border-t">
         <div className="container mx-auto">
           <p>
-            © {new Date().getFullYear()} Betting Tips App. All rights reserved.
+            © {new Date().getFullYear()} Betting Tips App. All rights
+            reserved.
           </p>
         </div>
       </footer>
