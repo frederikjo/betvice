@@ -1,11 +1,31 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, BarChart2 } from "lucide-react";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
 
-interface PerformanceData {
+export interface PerformanceData {
   successRate: number;
   winCount: number;
   lossCount: number;
@@ -54,16 +74,45 @@ const PerformanceTracker: React.FC<PerformanceTrackerProps> = ({
     },
   },
 }) => {
+  // Function to transform the data for the chart
+  const getChartData = (stats: PerformanceData) => {
+    return [
+      {
+        name: "Wins",
+        value: stats.winCount,
+        fill: "#10b981", // green-500
+      },
+      {
+        name: "Losses",
+        value: stats.lossCount,
+        fill: "#ef4444", // red-500
+      },
+      {
+        name: "Success %",
+        value: stats.successRate,
+        fill: "#3b82f6", // blue-500
+      },
+      {
+        name: "Profit",
+        value: Math.round(stats.profitLoss * 100) / 100, // Round to 2 decimal places
+        fill: "#10b981", // green-500
+      },
+    ];
+  };
+
   return (
-    <Card className="w-full bg-background">
+    <Card className="bg-background w-full">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl font-bold">
             Performance Tracker
           </CardTitle>
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="flex items-center gap-1">
-              <BarChart2 className="h-3 w-3" />
+            <Badge
+              variant="outline"
+              className="flex items-center gap-1"
+            >
+              <BarChart2 className="w-3 h-3" />
               <span>Stats</span>
             </Badge>
           </div>
@@ -78,54 +127,75 @@ const PerformanceTracker: React.FC<PerformanceTrackerProps> = ({
           </TabsList>
 
           {Object.entries(data).map(([period, stats]) => (
-            <TabsContent key={period} value={period} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <TabsContent
+              key={period}
+              value={period}
+              className="space-y-4"
+            >
+              <div className="md:grid-cols-3 grid grid-cols-1 gap-4">
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">Success Rate</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">
+                      Success Rate
+                    </span>
                     <span className="text-2xl font-bold">
                       {stats.successRate}%
                     </span>
                   </div>
-                  <Progress value={stats.successRate} className="h-2" />
+                  <Progress
+                    value={stats.successRate}
+                    className="h-2"
+                  />
                 </div>
 
-                <div className="flex flex-col justify-center items-center bg-muted/30 rounded-md p-3">
+                <div className="bg-muted/30 flex flex-col items-center justify-center p-3 rounded-md">
                   <div className="flex items-center gap-4">
                     <div className="text-center">
-                      <p className="text-sm text-muted-foreground">Wins</p>
+                      <p className="text-muted-foreground text-sm">
+                        Wins
+                      </p>
                       <p className="text-xl font-bold text-green-500">
                         {stats.winCount}
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm text-muted-foreground">Losses</p>
+                      <p className="text-muted-foreground text-sm">
+                        Losses
+                      </p>
                       <p className="text-xl font-bold text-red-500">
                         {stats.lossCount}
                       </p>
                     </div>
                     <div className="text-center">
-                      <p className="text-sm text-muted-foreground">Total</p>
-                      <p className="text-xl font-bold">{stats.totalTips}</p>
+                      <p className="text-muted-foreground text-sm">
+                        Total
+                      </p>
+                      <p className="text-xl font-bold">
+                        {stats.totalTips}
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-center items-center bg-muted/30 rounded-md p-3">
+                <div className="bg-muted/30 flex flex-col items-center justify-center p-3 rounded-md">
                   <div className="flex items-center gap-2">
                     <div>
                       {stats.profitLoss >= 0 ? (
-                        <TrendingUp className="h-6 w-6 text-green-500" />
+                        <TrendingUp className="w-6 h-6 text-green-500" />
                       ) : (
-                        <TrendingDown className="h-6 w-6 text-red-500" />
+                        <TrendingDown className="w-6 h-6 text-red-500" />
                       )}
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         Profit/Loss
                       </p>
                       <p
-                        className={`text-xl font-bold ${stats.profitLoss >= 0 ? "text-green-500" : "text-red-500"}`}
+                        className={`text-xl font-bold ${
+                          stats.profitLoss >= 0
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }`}
                       >
                         {stats.profitLoss >= 0 ? "+" : ""}
                         {stats.profitLoss.toFixed(2)}
@@ -135,21 +205,72 @@ const PerformanceTracker: React.FC<PerformanceTrackerProps> = ({
                   <div className="mt-2">
                     <Badge
                       variant={
-                        stats.streakType === "win" ? "default" : "destructive"
+                        stats.streakType === "win"
+                          ? "default"
+                          : "destructive"
                       }
                       className="text-xs"
                     >
                       {stats.streak}{" "}
-                      {stats.streakType === "win" ? "Win" : "Loss"} Streak
+                      {stats.streakType === "win" ? "Win" : "Loss"}{" "}
+                      Streak
                     </Badge>
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-center items-center h-16 bg-muted/20 rounded-md">
-                <p className="text-sm text-muted-foreground">
-                  Historical performance chart will be displayed here
-                </p>
+              {/* Replace the placeholder with the actual chart */}
+              <div className="w-full h-48 overflow-hidden rounded-md">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={getChartData(stats)}
+                    margin={{
+                      top: 10,
+                      right: 10,
+                      left: 10,
+                      bottom: 20,
+                    }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      opacity={0.2}
+                    />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fontSize: 12 }}
+                      tickLine={{ stroke: "#888" }}
+                      axisLine={{ stroke: "#888" }}
+                    />
+                    <YAxis
+                      tick={{ fontSize: 12 }}
+                      tickLine={{ stroke: "#888" }}
+                      axisLine={{ stroke: "#888" }}
+                    />
+                    <Tooltip
+                      formatter={(value, name) => {
+                        if (name === "Success %")
+                          return [`${value}%`, name];
+                        if (name === "Profit")
+                          return [`$${value}`, name];
+                        return [value, name];
+                      }}
+                      contentStyle={{
+                        backgroundColor: "rgba(255, 255, 255, 0.8)",
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
+                        fontSize: "12px",
+                      }}
+                    />
+                    <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                      {getChartData(stats).map((entry, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={entry.fill}
+                        />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
             </TabsContent>
           ))}
