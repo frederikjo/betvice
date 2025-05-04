@@ -2,10 +2,10 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -51,6 +51,40 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Betvice custom colors
+        betvice: {
+          blue: {
+            DEFAULT: "#3b82f6", // Electric Blue (primary)
+            dark: "#183153", // Deep Blue (dark)
+          },
+          steel: "#64748b", // Steel Gray
+          success: "#10b981", // Success Green
+          error: "#ef4444", // Alert Red
+          warning: "#f59e0b", // Highlight Gold
+        },
+        // Chart colors
+        chart: {
+          blue: "#3b82f6",
+          green: "#10b981",
+          red: "#ef4444",
+          gold: "#f59e0b",
+          purple: "#8b5cf6",
+          teal: "#14b8a6",
+        },
+      },
+      fontFamily: {
+        sans: [
+          "Inter",
+          "var(--font-sans)",
+          "ui-sans-serif",
+          "system-ui",
+        ],
+        mono: [
+          "IBM Plex Mono",
+          "ui-monospace",
+          "SFMono-Regular",
+          "monospace",
+        ],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -74,4 +108,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
