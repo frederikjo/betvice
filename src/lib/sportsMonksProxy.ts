@@ -1,4 +1,4 @@
-// src/lib/sportmonksDirectApi.ts
+// src/lib/sportmonksWithProxy.ts
 import { BTTSGame } from "./types";
 
 // Mock data as fallback
@@ -18,12 +18,12 @@ const mockBTTSGames: BTTSGame[] = [
 ];
 
 /**
- * Direct implementation to fetch BTTS picks from SportMonks API
+ * Fetch BTTS picks from SportMonks API through a CORS proxy
  */
 export async function fetchBTTSPicksFromSportMonks(): Promise<{
   games: BTTSGame[];
 }> {
-  // Get your SportMonks API token from environment or config
+  // Get your SportMonks API token from environment
   const API_TOKEN = import.meta.env.VITE_SPORTMONKS_TOKEN;
 
   if (!API_TOKEN) {
@@ -34,10 +34,19 @@ export async function fetchBTTSPicksFromSportMonks(): Promise<{
   }
 
   try {
-    // Create the exact URL you want to call
-    const url = `https://api.sportmonks.com/v3/football/rounds/339269?include=fixtures.odds.market;fixtures.odds.bookmaker;fixtures.participants;league.country&filters=markets:14;bookmakers:2&api_token=${API_TOKEN}`;
+    // Option 1: Use a public CORS proxy (not recommended for production)
+    // const CORS_PROXY = "https://corsproxy.io/?";
 
-    console.log("Calling SportMonks API directly...");
+    // Option 2: Local development proxy via Vite (recommended)
+    // This works if you've set up a proxy in your vite.config.js
+    const PROXY_PATH = "/api/sportmonks";
+
+    // Build the URL
+    // If using public proxy: const url = `${CORS_PROXY}https://api.sportmonks.com/v3/football/rounds/339269?include=fixtures...`;
+    // If using Vite proxy:
+    const url = `${PROXY_PATH}/football/rounds/339269?include=fixtures.odds.market;fixtures.odds.bookmaker;fixtures.participants;league.country&filters=markets:14;bookmakers:2&api_token=${API_TOKEN}`;
+
+    console.log("Calling SportMonks API through proxy...");
 
     // Make the API call
     const response = await fetch(url);

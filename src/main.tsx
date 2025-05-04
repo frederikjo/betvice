@@ -8,6 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 
 import { TempoDevtools } from "tempo-devtools";
 TempoDevtools.init();
+import "./lib/envChecker";
 
 const basename = import.meta.env.BASE_URL;
 

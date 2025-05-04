@@ -1,6 +1,6 @@
 // src/lib/chatBotLogic.ts
-import { getBTTSGames } from "../services/bttsApiService";
-import type { BTTSGame } from "./types";
+
+import { fetchBTTSPicksFromSportMonks } from "./sportsMonksProxy";
 
 type BotResponseHandler = () => Promise<string>;
 
@@ -12,8 +12,12 @@ export const botResponseHandlers: Record<string, BotResponseHandler> =
 
     btts: async () => {
       try {
-        // Use the service function instead of direct API call
-        const data = await getBTTSGames();
+        console.log("Fetching BTTS picks via proxy...");
+
+        // Call the proxy implementation
+        const data = await fetchBTTSPicksFromSportMonks();
+
+        console.log(`Received ${data.games.length} BTTS picks`);
 
         if (!data.games.length) {
           return "No BTTS picks found for today.";
@@ -28,12 +32,10 @@ export const botResponseHandlers: Record<string, BotResponseHandler> =
           )
           .join("\n");
 
-        console.log(formattedGames, data);
-
         return `Here are today's BTTS picks:\n\n${formattedGames}`;
       } catch (error) {
-        console.error("BTTS Error:", error);
-        return "Sorry, there was an error fetching BTTS picks. Please try again later.";
+        console.error("Error in BTTS handler:", error);
+        return "Sorry, I couldn't fetch the BTTS picks at the moment. Please try again later.";
       }
     },
 
