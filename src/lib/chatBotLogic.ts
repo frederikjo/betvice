@@ -1,4 +1,6 @@
-import { getBttsPicksFromApi } from "@/lib/sportmonks";
+// src/lib/chatBotLogic.ts
+import { getBTTSGames } from "../services/bttsApiService";
+import type { BTTSGame } from "./types";
 
 type BotResponseHandler = () => Promise<string>;
 
@@ -9,26 +11,30 @@ export const botResponseHandlers: Record<string, BotResponseHandler> =
     },
 
     btts: async () => {
-      const data = await getBttsPicksFromApi();
+      try {
+        // Use the service function instead of direct API call
+        const data = await getBTTSGames();
 
-      console.log(data);
+        if (!data.games.length) {
+          return "No BTTS picks found for today.";
+        }
 
-      if (!data.games.length) {
-        return "No BTTS picks found for today.";
+        const formattedGames = data.games
+          .map(
+            (game) =>
+              `${game.home} vs ${game.away} - Kickoff: ${
+                game.kickoff
+              } - Probability BTTS: ${game.probability.toFixed(1)}%`
+          )
+          .join("\n");
+
+        console.log(formattedGames, data);
+
+        return `Here are today's BTTS picks:\n\n${formattedGames}`;
+      } catch (error) {
+        console.error("BTTS Error:", error);
+        return "Sorry, there was an error fetching BTTS picks. Please try again later.";
       }
-
-      const formattedGames = data.games
-        .map(
-          (game) =>
-            `${game.home} vs ${game.away} - Kickoff: ${
-              game.kickoff
-            } - Probability BTTS: ${game.probability.toFixed(1)}%`
-        )
-        .join("\n");
-
-      console.log(formattedGames);
-
-      return `Here are today's BTTS picks:\n\n${formattedGames}`;
     },
 
     fallback: async () => {
