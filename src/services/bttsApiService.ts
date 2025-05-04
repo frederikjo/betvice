@@ -63,7 +63,6 @@ export async function fetchBTTSPicksFromSportMonks(): Promise<{
           return;
         }
 
-        // Extract teams
         const homeTeam = fixture.participants.find(
           (p: any) => p.meta?.location === "home"
         )?.name;
