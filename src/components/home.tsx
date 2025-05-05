@@ -7,6 +7,7 @@ import PerformanceSection from "./home/PerformanceSection";
 import Header from "./Header";
 import BettingAssistantProvider from "./ai-bot/BettingAssistantProvider";
 import { Card } from "./ui/card";
+import FixtureList from "./Fixtures/FixtureList";
 
 const Home = () => {
   // const [isDarkMode, setIsDarkMode] = useState(false);
@@ -59,7 +60,8 @@ const Home = () => {
             ]}
           />
 
-          <TipsSection
+          <FixtureList />
+          {/* <TipsSection
             tips={[
               {
                 id: "1",
@@ -128,7 +130,7 @@ const Home = () => {
                 date: "2023-05-17",
               },
             ]}
-          />
+          /> */}
         </main>
 
         <footer className="bg-background text-muted-foreground p-4 text-sm text-center border-t">
