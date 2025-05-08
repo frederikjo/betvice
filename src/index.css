@@ -6,89 +6,92 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Base shadcn variables */
+    --background: 35 57% 85%; /* soft-cream */
+    --foreground: 210 29% 43%; /* hazy-blue */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 35 57% 85%; /* soft-cream */
+    --card-foreground: 210 29% 43%; /* hazy-blue */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 35 57% 85%; /* soft-cream */
+    --popover-foreground: 210 29% 43%; /* hazy-blue */
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 20 57% 79%; /* dusty-rose */
+    --primary-foreground: 210 29% 43%; /* hazy-blue */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 157 20% 71%; /* muted-sage */
+    --secondary-foreground: 210 29% 43%; /* hazy-blue */
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 25 12% 69%; /* cloudy-stone */
+    --muted-foreground: 210 29% 23%; /* hazy-blue darker */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 348 50% 70%; /* faded-berry */
+    --accent-foreground: 210 29% 43%; /* hazy-blue */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 25 12% 69%; /* cloudy-stone */
+    --input: 25 12% 69%; /* cloudy-stone */
+    --ring: 210 29% 43%; /* hazy-blue */
 
     --radius: 0.5rem;
 
     /* Betvice specific CSS variables */
-    --betvice-blue: 217.9 91.2% 59.8%; /* #3b82f6 Electric Blue */
-    --betvice-blue-dark: 214 53.1% 20.8%; /* #183153 Deep Blue */
-    --betvice-steel: 218 17.1% 46.9%; /* #64748b Steel Gray */
-    --betvice-success: 161.4 93.5% 30.4%; /* #10b981 Success Green */
-    --betvice-error: 0 86.7% 59.6%; /* #ef4444 Alert Red */
-    --betvice-warning: 37.7 92.1% 50.2%; /* #f59e0b Highlight Gold */
+    --betvise-blue: 210 29% 43%; /* #4E6E8D Hazy Blue */
+    --betvise-rose: 20 57% 79%; /* #E8BCAB Dusty Rose */
+    --betvise-sage: 157 20% 71%; /* #A7C5BD Muted Sage */
+    --betvise-cream: 35 57% 85%; /* #F5DCC0 Soft Cream */
+    --betvise-berry: 348 50% 70%; /* #D88E9D Faded Berry */
+    --betvise-moss: 101 6% 59%; /* #8F9E92 Hazy Moss */
+    --betvise-misty: 209 17% 57%; /* #7A92A7 Misty Blue */
+    --betvise-terracotta: 20 31% 68%; /* #CDA18F Foggy Terracotta */
+    --betvise-stone: 25 12% 69%; /* #BAB0A7 Cloudy Stone */
 
     /* Chart colors as HSL variables */
-    --chart-blue: 217.9 91.2% 59.8%; /* #3b82f6 */
-    --chart-green: 161.4 93.5% 30.4%; /* #10b981 */
-    --chart-red: 0 86.7% 59.6%; /* #ef4444 */
-    --chart-gold: 37.7 92.1% 50.2%; /* #f59e0b */
-    --chart-purple: 270 95.2% 63.5%; /* #8b5cf6 */
-    --chart-teal: 168.3 83.8% 37.5%; /* #14b8a6 */
+    --chart-blue: 210 29% 43%; /* #4E6E8D */
+    --chart-green: 157 20% 71%; /* #A7C5BD */
+    --chart-rose: 20 57% 79%; /* #E8BCAB */
+    --chart-berry: 348 50% 70%; /* #D88E9D */
+    --chart-terracotta: 20 31% 68%; /* #CDA18F */
+    --chart-moss: 101 6% 59%; /* #8F9E92 */
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 210 29% 16%; /* hazy-blue-800 */
+    --foreground: 35 57% 85%; /* soft-cream */
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 210 29% 23%; /* hazy-blue-700 */
+    --card-foreground: 35 57% 85%; /* soft-cream */
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 210 29% 23%; /* hazy-blue-700 */
+    --popover-foreground: 35 57% 85%; /* soft-cream */
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 20 57% 79%; /* dusty-rose */
+    --primary-foreground: 210 29% 16%; /* hazy-blue-800 */
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 157 20% 61%; /* muted-sage darker for dark mode */
+    --secondary-foreground: 35 57% 85%; /* soft-cream */
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 210 29% 30%; /* hazy-blue-600 */
+    --muted-foreground: 35 57% 75%; /* soft-cream lighter */
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 348 50% 70%; /* faded-berry */
+    --accent-foreground: 210 29% 16%; /* hazy-blue-800 */
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 35 57% 85%; /* soft-cream */
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 210 29% 30%; /* hazy-blue-600 */
+    --input: 210 29% 30%; /* hazy-blue-600 */
+    --ring: 35 57% 65%; /* soft-cream darker */
 
     /* Betvice specific dark mode CSS variables */
-    --betvice-blue: 217.9 91.2% 59.8%; /* #3b82f6 Electric Blue (same) */
-    --betvice-blue-dark: 214 53.1% 20.8%; /* #183153 Deep Blue (same) */
-    --betvice-steel: 218 17.1% 56.9%; /* Lighter steel for dark mode */
-    --betvice-success: 161.4 93.5% 30.4%; /* #10b981 Success Green (same) */
-    --betvice-error: 0 86.7% 59.6%; /* #ef4444 Alert Red (same) */
-    --betvice-warning: 37.7 92.1% 50.2%; /* #f59e0b Highlight Gold (same) */
+    --betvise-blue: 210 29% 43%; /* #4E6E8D Hazy Blue (same) */
+    --betvise-rose: 20 57% 79%; /* #E8BCAB Dusty Rose (same) */
+    --betvise-sage: 157 20% 71%; /* #A7C5BD Muted Sage (same) */
+    --betvise-cream: 35 57% 85%; /* #F5DCC0 Soft Cream (same) */
+    --betvise-berry: 348 50% 70%; /* #D88E9D Faded Berry (same) */
   }
 }
 
@@ -105,5 +108,25 @@
   .font-mono {
     font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular,
       monospace;
+  }
+
+  /* Add hazy filter class for elements */
+  .hazy-filter {
+    @apply bg-opacity-90 backdrop-blur-sm;
+  }
+
+  /* Card with hazy effect */
+  .card-hazy {
+    @apply border-betvise-stone/30 bg-betvise-cream/90 backdrop-blur-sm border;
+  }
+
+  /* Button with hazy effect */
+  .btn-hazy {
+    @apply bg-betvise-rose/90 text-betvise-blue-800 hover:bg-betvise-rose/80 transition-all;
+  }
+
+  /* Add text glow for emphasis */
+  .text-glow {
+    text-shadow: 0 0 5px rgba(232, 188, 171, 0.5);
   }
 }

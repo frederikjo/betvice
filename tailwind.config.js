@@ -1,4 +1,137 @@
 /** @type {import('tailwindcss').Config} */
+
+const colors = {
+  // Main hazy palette colors
+  "dusty-rose": {
+    DEFAULT: "#E8BCAB",
+    50: "#FCF8F6",
+    100: "#F7EEE9",
+    200: "#F0DED6",
+    300: "#E8BCAB",
+    400: "#DFA48A",
+    500: "#D68C6A",
+    600: "#CD7149",
+    700: "#AC5A35",
+    800: "#7D4126",
+    900: "#4E2817",
+    950: "#361C10",
+  },
+  "muted-sage": {
+    DEFAULT: "#A7C5BD",
+    50: "#F4F7F6",
+    100: "#E9F0ED",
+    200: "#D4E0DB",
+    300: "#A7C5BD",
+    400: "#86B0A5",
+    500: "#659A8D",
+    600: "#4F7D72",
+    700: "#3B5D55",
+    800: "#273E38",
+    900: "#141F1C",
+    950: "#0A100E",
+  },
+  "hazy-blue": {
+    DEFAULT: "#4E6E8D",
+    50: "#EEF1F4",
+    100: "#DCE3E9",
+    200: "#BAC7D4",
+    300: "#8FA5BA",
+    400: "#6584A0",
+    500: "#4E6E8D",
+    600: "#3F5872",
+    700: "#2F4356",
+    800: "#202C39",
+    900: "#10161D",
+    950: "#080B0F",
+  },
+  "soft-cream": {
+    DEFAULT: "#F5DCC0",
+    50: "#FEFCF9",
+    100: "#FCF8F2",
+    200: "#F9F1E6",
+    300: "#F5DCC0",
+    400: "#EDC392",
+    500: "#E5AA64",
+    600: "#DC9136",
+    700: "#B77520",
+    800: "#855418",
+    900: "#52340F",
+    950: "#39230A",
+  },
+  "faded-berry": {
+    DEFAULT: "#D88E9D",
+    50: "#F9F1F3",
+    100: "#F3E3E7",
+    200: "#E8C7CF",
+    300: "#D88E9D",
+    400: "#CB677B",
+    500: "#BF4058",
+    600: "#993347",
+    700: "#732635",
+    800: "#4C1A23",
+    900: "#260D12",
+    950: "#13060A",
+  },
+
+  // Additional hazy colors
+  "hazy-moss": {
+    DEFAULT: "#8F9E92",
+    50: "#F3F4F3",
+    100: "#E6E9E7",
+    200: "#CED3CF",
+    300: "#B0B9B3",
+    400: "#8F9E92",
+    500: "#738279",
+    600: "#5B675F",
+    700: "#444D47",
+    800: "#2D322F",
+    900: "#161918",
+    950: "#0B0C0C",
+  },
+  "misty-blue": {
+    DEFAULT: "#7A92A7",
+    50: "#F1F3F5",
+    100: "#E2E8EC",
+    200: "#C6D0D9",
+    300: "#A3B3C2",
+    400: "#7A92A7",
+    500: "#5F7892",
+    600: "#4C6075",
+    700: "#384858",
+    800: "#25303B",
+    900: "#12181D",
+    950: "#090C0F",
+  },
+  "foggy-terracotta": {
+    DEFAULT: "#CDA18F",
+    50: "#F8F4F2",
+    100: "#F1E9E5",
+    200: "#E2D3CB",
+    300: "#CDA18F",
+    400: "#BD8269",
+    500: "#AB6344",
+    600: "#884F36",
+    700: "#653B29",
+    800: "#42271B",
+    900: "#21140D",
+    950: "#110A07",
+  },
+  "cloudy-stone": {
+    DEFAULT: "#BAB0A7",
+    50: "#F6F5F4",
+    100: "#EDEBE9",
+    200: "#DCD7D3",
+    300: "#BAB0A7",
+    400: "#A29585",
+    500: "#8A7A67",
+    600: "#6E6253",
+    700: "#53493F",
+    800: "#37312A",
+    900: "#1B1815",
+    950: "#0E0C0A",
+  },
+};
+
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -21,56 +154,33 @@ module.exports = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        // Betvice custom colors
-        betvice: {
-          blue: {
-            DEFAULT: "#3b82f6", // Electric Blue (primary)
-            dark: "#183153", // Deep Blue (dark)
-          },
-          steel: "#64748b", // Steel Gray
-          success: "#10b981", // Success Green
-          error: "#ef4444", // Alert Red
-          warning: "#f59e0b", // Highlight Gold
-        },
-        // Chart colors
-        chart: {
-          blue: "#3b82f6",
-          green: "#10b981",
-          red: "#ef4444",
-          gold: "#f59e0b",
-          purple: "#8b5cf6",
-          teal: "#14b8a6",
-        },
+        primary: colors["dusty-rose"],
+        secondary: colors["muted-sage"],
+        accent: colors["faded-berry"],
+        background: colors["soft-cream"],
+        foreground: colors["hazy-blue"],
+        muted: colors["cloudy-stone"],
+        dark: colors["hazy-blue"]["800"],
+
+        // Use these for specific components
+        "betvise-blue": colors["hazy-blue"],
+        "betvise-rose": colors["dusty-rose"],
+        "betvise-sage": colors["muted-sage"],
+        "betvise-cream": colors["soft-cream"],
+        "betvise-berry": colors["faded-berry"],
+        "betvise-moss": colors["hazy-moss"],
+        "betvise-misty": colors["misty-blue"],
+        "betvise-terracotta": colors["foggy-terracotta"],
+        "betvise-stone": colors["cloudy-stone"],
+      },
+      fontFamily: {
+        sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+        mono: [
+          "IBM Plex Mono",
+          "ui-monospace",
+          "SFMono-Regular",
+          "monospace",
+        ],
       },
       fontFamily: {
         sans: [

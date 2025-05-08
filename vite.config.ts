@@ -17,6 +17,7 @@ export default defineConfig({
     preserveSymlinks: true,
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      assets: "/src/assets",
     },
   },
   server: {

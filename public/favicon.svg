@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- App icon background -->
+  <rect x="2" y="2" width="28" height="28" rx="6" ry="6" fill="#4E6E8D" />
+  
+  <!-- Simple "BV" initials -->
+  <text x="16" y="22" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle">
+    <tspan fill="#E8BCAB">B</tspan><tspan fill="#A7C5BD">V</tspan>
+  </text>
+  
+  <!-- Accent dot with specified position -->
+  <circle cx="21" cy="10" r="2" fill="#E8BCAB" />
+</svg>

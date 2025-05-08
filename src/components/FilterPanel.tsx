@@ -38,6 +38,9 @@ export interface FilterOptions {
 
 const FilterPanel: React.FC<FilterPanelProps> = ({
   onFilterChange = () => {},
+  sportTypes = [],
+  leagues = [],
+  timeFrames = [],
 }) => {
   const [filters, setFilters] = useState<FilterOptions>({
     sportType: "all",
@@ -56,7 +59,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   };
 
   return (
-    <div className="bg-background sticky top-0 z-10 w-full p-4 border-b">
+    <div className="bg-betvise-cream/80 backdrop-blur-sm border-betvise-stone/30 dark:bg-betvise-blue-800/90 dark:border-betvise-blue-700 sticky top-0 z-10 w-full p-4 border-b">
       <div className="max-w-7xl mx-auto">
         <div className="md:flex-row md:items-center flex flex-col items-start justify-between gap-4">
           <div className="flex flex-wrap items-center gap-3">
@@ -66,16 +69,16 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                 handleFilterChange("sportType", value)
               }
             >
-              <SelectTrigger className="w-[140px]">
+              <SelectTrigger className="w-[140px] bg-betvise-cream border-betvise-stone/30 text-betvise-blue dark:bg-betvise-blue-700 dark:text-betvise-cream">
                 <SelectValue placeholder="Sport Type" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-betvise-cream border-betvise-stone/30 text-betvise-blue dark:bg-betvise-blue-700 dark:text-betvise-cream">
                 <SelectItem value="all">All Sports</SelectItem>
-                <SelectItem value="football">Football</SelectItem>
-                <SelectItem value="basketball">Basketball</SelectItem>
-                <SelectItem value="tennis">Tennis</SelectItem>
-                <SelectItem value="hockey">Hockey</SelectItem>
-                <SelectItem value="baseball">Baseball</SelectItem>
+                {sportTypes.map((sport) => (
+                  <SelectItem key={sport} value={sport.toLowerCase()}>
+                    {sport}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -85,19 +88,19 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                 handleFilterChange("league", value)
               }
             >
-              <SelectTrigger className="w-[160px]">
+              <SelectTrigger className="w-[160px] bg-betvise-cream border-betvise-stone/30 text-betvise-blue dark:bg-betvise-blue-700 dark:text-betvise-cream">
                 <SelectValue placeholder="League" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-betvise-cream border-betvise-stone/30 text-betvise-blue dark:bg-betvise-blue-700 dark:text-betvise-cream">
                 <SelectItem value="all">All Leagues</SelectItem>
-                <SelectItem value="premier-league">
-                  Premier League
-                </SelectItem>
-                <SelectItem value="la-liga">La Liga</SelectItem>
-                <SelectItem value="bundesliga">Bundesliga</SelectItem>
-                <SelectItem value="serie-a">Serie A</SelectItem>
-                <SelectItem value="nba">NBA</SelectItem>
-                <SelectItem value="nhl">NHL</SelectItem>
+                {leagues.map((league) => (
+                  <SelectItem
+                    key={league}
+                    value={league.toLowerCase().replace(/ /g, "-")}
+                  >
+                    {league}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
 
@@ -105,7 +108,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className="w-[160px] justify-start"
+                  className="w-[160px] justify-start bg-betvise-cream border-betvise-stone/30 text-betvise-blue hover:bg-betvise-rose/10 dark:bg-betvise-blue-700 dark:text-betvise-cream"
                 >
                   <Calendar className="w-4 h-4 mr-2" />
                   {filters.date
@@ -113,7 +116,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                     : "Pick a date"}
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
+              <PopoverContent
+                className="bg-betvise-cream border-betvise-stone/30 dark:bg-betvise-blue-700 w-auto p-0"
+                align="start"
+              >
                 <CalendarComponent
                   mode="single"
                   selected={filters.date}
@@ -121,6 +127,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                     handleFilterChange("date", date)
                   }
                   initialFocus
+                  className="bg-betvise-cream dark:bg-betvise-blue-700"
                 />
               </PopoverContent>
             </Popover>
@@ -134,11 +141,16 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             }
             className="md:w-auto w-full"
           >
-            <TabsList>
-              <TabsTrigger value="today">Today</TabsTrigger>
-              <TabsTrigger value="tomorrow">Tomorrow</TabsTrigger>
-              <TabsTrigger value="weekend">Weekend</TabsTrigger>
-              <TabsTrigger value="week">This Week</TabsTrigger>
+            <TabsList className="bg-betvise-stone/20 dark:bg-betvise-blue-600">
+              {timeFrames.map((timeFrame) => (
+                <TabsTrigger
+                  key={timeFrame}
+                  value={timeFrame.toLowerCase()}
+                  className="data-[state=active]:bg-betvise-cream data-[state=active]:text-betvise-blue-800 dark:data-[state=active]:bg-betvise-blue-500 dark:data-[state=active]:text-betvise-cream"
+                >
+                  {timeFrame}
+                </TabsTrigger>
+              ))}
             </TabsList>
           </Tabs>
         </div>

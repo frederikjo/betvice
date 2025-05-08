@@ -61,39 +61,48 @@ const TipCard = ({
 
   // Determine confidence level text and color
   const getConfidenceLevel = () => {
-    if (confidenceRating >= 80) return { text: "High", color: "bg-green-500" };
+    if (confidenceRating >= 80)
+      return { text: "High", color: "bg-betvise-sage" };
     if (confidenceRating >= 60)
-      return { text: "Medium", color: "bg-yellow-500" };
-    return { text: "Low", color: "bg-red-500" };
+      return { text: "Medium", color: "bg-betvise-terracotta" };
+    return { text: "Low", color: "bg-betvise-berry" };
   };
 
   const confidenceLevel = getConfidenceLevel();
 
   return (
     <Card
-      className={`w-full max-w-[380px] h-[220px] cursor-pointer hover:shadow-lg transition-shadow ${isRecommended ? "border-l-4 border-l-green-500" : ""}`}
+      className={`w-full max-w-[380px] h-[220px] cursor-pointer hover:shadow-lg transition-shadow card-hazy backdrop-blur-sm dark:bg-betvise-blue-800/90 dark:border-betvise-blue-700/50 ${
+        isRecommended ? "border-l-4 border-l-betvise-sage" : ""
+      }`}
       onClick={onClick}
     >
-      <CardHeader className="p-4 pb-2 flex flex-row justify-between items-start">
+      <CardHeader className="flex flex-row items-start justify-between p-4 pb-2">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <Badge variant="outline" className="text-xs font-normal">
+            <Badge
+              variant="outline"
+              className="border-betvise-stone/30 text-betvise-blue dark:text-betvise-cream text-xs font-normal"
+            >
               {sportType}
             </Badge>
-            <Badge variant="outline" className="text-xs font-normal">
+            <Badge
+              variant="outline"
+              className="border-betvise-stone/30 text-betvise-blue dark:text-betvise-cream text-xs font-normal"
+            >
               {league}
             </Badge>
             {isRecommended && (
-              <Badge className="bg-green-500 hover:bg-green-600 text-xs">
+              <Badge className="bg-betvise-sage hover:bg-betvise-sage-600 text-betvise-blue-900 text-xs">
                 Recommended
               </Badge>
             )}
           </div>
-          <h3 className="font-semibold text-base">
+          <h3 className="text-betvise-blue-800 dark:text-betvise-cream text-base font-semibold">
             {teams.home} vs {teams.away}
           </h3>
         </div>
-        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+        <div className="text-betvise-blue flex items-center gap-1 text-sm">
           <CalendarIcon size={14} />
           <span>
             {formattedDate} {time}
@@ -102,27 +111,35 @@ const TipCard = ({
       </CardHeader>
 
       <CardContent className="p-4 pt-0">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center justify-between mb-4">
           <div>
             <span className="text-sm font-medium">Tip:</span>
             <span className="ml-2 font-semibold">{tipType}</span>
           </div>
           <div className="flex items-center">
-            <span className="text-sm font-medium mr-2">Odds:</span>
+            <span className="mr-2 text-sm font-medium">Odds:</span>
             <span className="font-bold">{odds.value}</span>
             {odds.movement === "up" && (
-              <TrendingUpIcon size={16} className="ml-1 text-green-500" />
+              <TrendingUpIcon
+                size={16}
+                className="ml-1 text-green-500"
+              />
             )}
             {odds.movement === "down" && (
-              <TrendingDownIcon size={16} className="ml-1 text-red-500" />
+              <TrendingDownIcon
+                size={16}
+                className="ml-1 text-red-500"
+              />
             )}
           </div>
         </div>
 
         <div className="mb-2">
-          <div className="flex justify-between items-center mb-1">
+          <div className="flex items-center justify-between mb-1">
             <span className="text-sm">Confidence</span>
-            <span className="text-sm font-medium">{confidenceRating}%</span>
+            <span className="text-sm font-medium">
+              {confidenceRating}%
+            </span>
           </div>
           <div className="relative">
             <Progress value={confidenceRating} className="h-2" />
@@ -133,11 +150,11 @@ const TipCard = ({
         </div>
       </CardContent>
 
-      <CardFooter className="p-4 pt-0 flex justify-between items-center">
+      <CardFooter className="flex items-center justify-between p-4 pt-0">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className="flex items-center text-sm text-muted-foreground cursor-help">
+              <div className="text-muted-foreground cursor-help flex items-center text-sm">
                 <InfoIcon size={14} className="mr-1" />
                 <span>View analysis</span>
               </div>
@@ -148,7 +165,9 @@ const TipCard = ({
           </Tooltip>
         </TooltipProvider>
         <Badge
-          variant={confidenceLevel.text === "High" ? "default" : "outline"}
+          variant={
+            confidenceLevel.text === "High" ? "default" : "outline"
+          }
           className="text-xs"
         >
           {confidenceLevel.text} Confidence
