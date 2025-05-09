@@ -1,0 +1,11 @@
+
+<svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+
+  <rect x="50" y="50" width="500" height="100" rx="20" ry="20" fill="#4E6E8D" />
+
+  <text x="300" y="120" font-family="Arial, sans-serif" font-size="65" font-weight="bold" text-anchor="middle" letter-spacing="1">
+    <tspan fill="#E8BCAB">bet</tspan><tspan fill="#A7C5BD">vise</tspan>
+  </text>
+  
+  <circle cx="331.46" cy="75" r="8" fill="#E8BCAB" />
+</svg>

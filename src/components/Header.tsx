@@ -3,7 +3,8 @@ import { Sun, Moon } from "lucide-react";
 import { Button } from "./ui/button";
 import BettingAssistantButton from "./ai-bot/BettingAssistantButton";
 import BettingAssistant from "./ai-bot/BettingAssistant";
-import BetviseLogo from "../assets/betvise-logo.svg";
+import BetviseLogo from "../assets/BetviseLogo.svg";
+import Icon from "./ui/Icon";
 
 const Header = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -23,10 +24,7 @@ const Header = () => {
     <>
       <header className="bg-betvise-cream border-betvise-stone/20 dark:bg-betvise-blue-800 dark:border-betvise-blue-700 sticky top-0 w-full px-2 py-3 border-b shadow-sm">
         <div className="container flex items-center justify-between mx-auto">
-          <div className="flex items-center">
-            {/* Correct way to embed SVG directly in JSX */}
-            <BetviseLogo />
-          </div>
+          <Icon icon="BetviseLogo" />
 
           <div className="flex items-center gap-2">
             <BettingAssistantButton />
