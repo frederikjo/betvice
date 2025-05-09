@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Tabs,
   TabsList,
@@ -20,13 +20,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar as CalendarComponent } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import { format, addDays } from "date-fns";
 
 interface FilterPanelProps {
-  onFilterChange: (filters: any) => void;
+  onFilterChange: (filters: FilterOptions) => void;
   sportTypes: string[];
   leagues: string[];
   timeFrames: string[];
+  initialFilters?: FilterOptions;
 }
 
 export interface FilterOptions {
@@ -41,19 +42,61 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   sportTypes = [],
   leagues = [],
   timeFrames = [],
+  initialFilters,
 }) => {
   const [filters, setFilters] = useState<FilterOptions>({
     sportType: "all",
     league: "all",
     timeFrame: "today",
     date: new Date(),
+    ...(initialFilters || {}), // Use initialFilters if provided
   });
+
+  // Effect to sync date with timeFrame
+  useEffect(() => {
+    if (filters.timeFrame === "today") {
+      updateDateBasedOnTimeFrame(new Date());
+    } else if (filters.timeFrame === "tomorrow") {
+      updateDateBasedOnTimeFrame(addDays(new Date(), 1));
+    }
+    // No automatic date change for "this week" as it could refer to any day in the week
+  }, [filters.timeFrame]);
+
+  const updateDateBasedOnTimeFrame = (newDate: Date) => {
+    setFilters((prev) => {
+      const updated = { ...prev, date: newDate };
+      onFilterChange(updated);
+      return updated;
+    });
+  };
 
   const handleFilterChange = (
     key: keyof FilterOptions,
     value: any
   ) => {
     const newFilters = { ...filters, [key]: value };
+
+    // Special handling for date changes when not coming from timeFrame changes
+    if (key === "date" && value) {
+      // When date is manually changed, determine which timeFrame it corresponds to
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const tomorrow = addDays(today, 1);
+      tomorrow.setHours(0, 0, 0, 0);
+
+      const selectedDate = new Date(value);
+      selectedDate.setHours(0, 0, 0, 0);
+
+      if (selectedDate.getTime() === today.getTime()) {
+        newFilters.timeFrame = "today";
+      } else if (selectedDate.getTime() === tomorrow.getTime()) {
+        newFilters.timeFrame = "tomorrow";
+      } else {
+        newFilters.timeFrame = "this week"; // Default to "this week" for other dates
+      }
+    }
+
     setFilters(newFilters);
     onFilterChange(newFilters);
   };
@@ -134,7 +177,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           </div>
 
           <Tabs
-            defaultValue="today"
+            defaultValue={filters.timeFrame}
             value={filters.timeFrame}
             onValueChange={(value) =>
               handleFilterChange("timeFrame", value)

@@ -102,23 +102,7 @@ const PerformanceTracker: React.FC<PerformanceTrackerProps> = ({
 
   return (
     <Card className="bg-background w-full">
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-xl font-bold">
-            Performance Tracker
-          </CardTitle>
-          <div className="flex items-center gap-2">
-            <Badge
-              variant="outline"
-              className="flex items-center gap-1"
-            >
-              <BarChart2 className="w-3 h-3" />
-              <span>Stats</span>
-            </Badge>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
+      <CardContent className="pt-4">
         <Tabs defaultValue="weekly" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="weekly">This Week</TabsTrigger>

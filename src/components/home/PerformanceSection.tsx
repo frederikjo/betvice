@@ -1,12 +1,6 @@
 import React from "react";
 import PerformanceTracker from "../PerformanceTracker";
 import type { PerformanceData } from "../PerformanceTracker";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 interface PerformanceSectionProps {
   successRate?: number;
@@ -42,7 +36,7 @@ const PerformanceSection: React.FC<PerformanceSectionProps> = ({
       lossCount: losses,
       totalTips: wins + losses,
       profitLoss: profitLossValue,
-      streak: 3,
+      streak: 3, // Default value since we don't have this in props
       streakType: "win" as const,
     },
     monthly: {
@@ -67,16 +61,7 @@ const PerformanceSection: React.FC<PerformanceSectionProps> = ({
 
   return (
     <section className="mb-8">
-      <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="performance-tracker">
-          <AccordionTrigger className="text-xl font-semibold">
-            Performance Tracker
-          </AccordionTrigger>
-          <AccordionContent>
-            <PerformanceTracker data={performanceData} />
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+      <PerformanceTracker data={performanceData} />
     </section>
   );
 };
