@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Sun, Moon } from "lucide-react";
 import { Button } from "./ui/button";
 import BettingAssistantButton from "./ai-bot/BettingAssistantButton";
@@ -8,6 +8,19 @@ import Icon from "./ui/Icon";
 
 const Header = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -22,9 +35,20 @@ const Header = () => {
 
   return (
     <>
-      <header className="bg-betvise-cream border-betvise-stone/20 dark:bg-betvise-blue-800 dark:border-betvise-blue-700 sticky top-0 w-full px-2 py-3 border-b shadow-sm">
-        <div className="container flex items-center justify-between mx-auto">
-          <Icon icon="BetviseLogo" />
+      <header
+        className={`sticky top-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-gradient-to-r from-white to-[#F0F4F8] border-b border-gray-100 shadow-sm"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="container flex items-center justify-between px-4 py-3 mx-auto">
+          <Icon
+            icon="BetviseLogo"
+            width="120"
+            height="60"
+            className="hover:opacity-90 transition-opacity cursor-pointer"
+          />
 
           <div className="flex items-center gap-2">
             <BettingAssistantButton />
@@ -33,7 +57,7 @@ const Header = () => {
               size="icon"
               onClick={toggleTheme}
               aria-label="Toggle theme"
-              className="text-betvise-blue hover:text-betvise-berry hover:bg-betvise-cream-100 dark:text-betvise-cream dark:hover:bg-betvise-blue-700"
+              className="text-betvise-blue hover:text-betvise-berry hover:bg-background-100 dark:text-betvise-cream dark:hover:bg-betvise-blue-700"
             >
               {isDarkMode ? (
                 <Sun className="w-5 h-5" />

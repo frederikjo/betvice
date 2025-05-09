@@ -2,6 +2,7 @@ const API_BASE = "https://api.sportmonks.com/v3/football";
 const API_TOKEN = import.meta.env.VITE_SPORTMONKS_TOKEN;
 
 export interface Fixture {
+  odds: any;
   id: number;
   name: string;
   starting_at: string;

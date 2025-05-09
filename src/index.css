@@ -117,7 +117,7 @@
 
   /* Card with hazy effect */
   .card-hazy {
-    @apply border-betvise-stone/30 bg-betvise-cream/90 backdrop-blur-sm border;
+    @apply border-betvise-stone/30 bg-background/90 backdrop-blur-sm border;
   }
 
   /* Button with hazy effect */

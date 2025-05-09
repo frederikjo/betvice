@@ -2,6 +2,17 @@
 
 const colors = {
   // Main hazy palette colors
+  background: {
+    DEFAULT: "#FAFAFA",
+    50: "#FFFFFF",
+    100: "#F9F9F9",
+    200: "#F3F3F3",
+    300: "#EDEDED",
+    400: "#D7D7D7",
+    500: "#C1C1C1",
+    600: "#A8A8A8",
+    700: "#8F8F8F",
+  },
   "dusty-rose": {
     DEFAULT: "#E8BCAB",
     50: "#FCF8F6",
@@ -157,7 +168,7 @@ module.exports = {
         primary: colors["dusty-rose"],
         secondary: colors["muted-sage"],
         accent: colors["faded-berry"],
-        background: colors["soft-cream"],
+        background: colors["background"],
         foreground: colors["hazy-blue"],
         muted: colors["cloudy-stone"],
         dark: colors["hazy-blue"]["800"],

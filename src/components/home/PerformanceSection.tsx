@@ -1,5 +1,12 @@
 import React from "react";
 import PerformanceTracker from "../PerformanceTracker";
+import type { PerformanceData } from "../PerformanceTracker";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface PerformanceSectionProps {
   successRate?: number;
@@ -12,17 +19,64 @@ const PerformanceSection: React.FC<PerformanceSectionProps> = ({
   successRate = 68,
   winLossRatio = "34-16",
   profitMargin = "+12.5%",
-  timePeriods = ["Last Week", "Last Month", "Last 3 Months", "All Time"],
+  timePeriods = [
+    "Last Week",
+    "Last Month",
+    "Last 3 Months",
+    "All Time",
+  ],
 }) => {
+  // Parse the win-loss ratio to get counts
+  const [wins, losses] = winLossRatio
+    .split("-")
+    .map((num) => parseInt(num, 10));
+
+  // Parse profit margin percentage to a number
+  const profitLossValue = parseFloat(profitMargin.replace("%", ""));
+
+  // Create the data object expected by PerformanceTracker
+  const performanceData = {
+    weekly: {
+      successRate: successRate,
+      winCount: wins,
+      lossCount: losses,
+      totalTips: wins + losses,
+      profitLoss: profitLossValue,
+      streak: 3,
+      streakType: "win" as const,
+    },
+    monthly: {
+      successRate: successRate + 2,
+      winCount: wins * 4,
+      lossCount: losses * 4,
+      totalTips: (wins + losses) * 4,
+      profitLoss: profitLossValue * 4,
+      streak: 3,
+      streakType: "win" as const,
+    },
+    allTime: {
+      successRate: successRate + 1,
+      winCount: wins * 12,
+      lossCount: losses * 12,
+      totalTips: (wins + losses) * 12,
+      profitLoss: profitLossValue * 12,
+      streak: 3,
+      streakType: "win" as const,
+    },
+  };
+
   return (
     <section className="mb-8">
-      <h2 className="mb-4 text-xl font-semibold">Performance Tracker</h2>
-      <PerformanceTracker
-        successRate={successRate}
-        winLossRatio={winLossRatio}
-        profitMargin={profitMargin}
-        timePeriods={timePeriods}
-      />
+      <Accordion type="single" collapsible className="w-full">
+        <AccordionItem value="performance-tracker">
+          <AccordionTrigger className="text-xl font-semibold">
+            Performance Tracker
+          </AccordionTrigger>
+          <AccordionContent>
+            <PerformanceTracker data={performanceData} />
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </section>
   );
 };

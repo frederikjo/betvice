@@ -10,14 +10,14 @@ import { Card } from "./ui/card";
 import FixtureList from "./Fixtures/FixtureList";
 
 const Home = () => {
-  // const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   return (
     <BettingAssistantProvider>
       <div
-      // className={`min-h-screen w-full bg-background ${
-      //   isDarkMode ? "dark" : ""
-      // }`}
+        className={`min-h-screen w-full bg-background ${
+          isDarkMode ? "dark" : ""
+        }`}
       >
         <Header />
 
