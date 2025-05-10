@@ -68,7 +68,7 @@ const providerConfigs: Record<SportsApiProvider, ProviderConfig> = {
     baseUrl: "/api/sportmonks", // Using your proxy
   },
   theOddsApi: {
-    apiKey: "9cc34f2311ab6fd7b0c67b604c667f17",
+    apiKey: import.meta.env.VITE_THE_ODDS_API_KEY || "",
     baseUrl: "https://api.the-odds-api.com/v4",
   },
 };

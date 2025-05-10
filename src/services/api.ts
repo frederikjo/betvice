@@ -63,23 +63,30 @@ const apiService = {
      * @param endpoint - API endpoint without the base path (e.g., "/football/leagues")
      * @param params - Optional query parameters
      * @param options - Additional axios options
+     * @param bypassCache - Set to true to add a timestamp to bypass caching
      */
     request: async <T>(
       endpoint: string,
       params: Record<string, any> = {},
-      options: AxiosRequestConfig = {}
+      options: AxiosRequestConfig = {},
+      bypassCache: boolean = false
     ): Promise<ApiResponse<T>> => {
       try {
         // All SportMonks API requests will be proxied through /api/sportmonks
         const url = `/api/sportmonks${endpoint}`;
 
-        // Add the token to the params explicitly
+        // Add the token to the params
         const paramsWithToken = {
           ...params,
           api_token: API_TOKEN,
         };
 
-        // Also set up headers with the token
+        // Add timestamp to bust cache if needed
+        if (bypassCache) {
+          paramsWithToken._t = new Date().getTime();
+        }
+
+        // Set up request config
         const config: AxiosRequestConfig = {
           params: paramsWithToken,
           headers: {
@@ -88,9 +95,6 @@ const apiService = {
           },
           ...options,
         };
-
-        console.log("Making request to:", url);
-        console.log("With params:", paramsWithToken);
 
         const response: AxiosResponse<ApiResponse<T>> =
           await axios.get(url, config);
@@ -106,27 +110,50 @@ const apiService = {
       /**
        * Get fixtures for a specific date
        * @param date - Date in YYYY-MM-DD format
+       * @param refresh - Whether to bypass cache for a refresh
        */
-      getFixturesByDate: (date: string) =>
+      getFixturesByDate: (date: string, refresh: boolean = false) =>
         apiService.sportmonks.request<League[]>(
           `/football/leagues/date/${date}`,
           {
+            // Using standard include format with semicolons
             include:
               "today.scores;today.participants;today.stage;today.group;today.round",
-            per_page: 100, // Increase items per page
-          }
+          },
+          {},
+          refresh // Pass the refresh flag to determine if cache should be bypassed
         ),
 
       /**
-       * Get all inplay livescores (currently live matches)
-       * @returns All currently live matches
+       * Get live scores
+       * Always set bypassCache to true for live data
+       * @param refresh - Force a cache refresh (adds timestamp)
        */
-      getInplayLivescores: () =>
+      getLivescores: (refresh: boolean = false) =>
+        apiService.sportmonks.request<Fixture[]>(
+          `/football/livescores`,
+          {
+            // Include all necessary data
+            include:
+              "scores;participants;league;venue;statistics;periods;metadata",
+          },
+          {},
+          true // Always bypass cache for live data, refresh param adds timestamp
+        ),
+
+      /**
+       * Get inplay livescores (live matches only)
+       * @param refresh - Force a cache refresh (adds timestamp)
+       */
+      getInplayLivescores: (refresh: boolean = false) =>
         apiService.sportmonks.request<Fixture[]>(
           `/football/livescores/inplay`,
           {
-            include: "league;scores;participants;stage;group;round",
-          }
+            include:
+              "scores;participants;league;venue;statistics;periods;metadata",
+          },
+          {},
+          true // Always bypass cache for live data, refresh param adds timestamp
         ),
     },
   },
