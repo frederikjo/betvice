@@ -1,5 +1,4 @@
 // src/lib/chatBotLogic.ts
-import { fetchBTTSPicksFromSportMonks } from "../services/bttsApiService";
 
 type BotResponseHandler = () => Promise<string>;
 
@@ -14,7 +13,7 @@ export const botResponseHandlers: Record<string, BotResponseHandler> =
         console.log("Fetching BTTS picks from SportMonks API...");
 
         // Fetch real data from SportMonks API
-        const data = await fetchBTTSPicksFromSportMonks();
+        const data = await null;
 
         if (!data.games.length) {
           return "No BTTS picks found for today. Please try again later.";

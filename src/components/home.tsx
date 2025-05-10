@@ -1,84 +1,32 @@
-import React, { useState } from "react";
-import { FilterOptions } from "@/components/FilterPanel";
-import FilterPanel from "./FilterPanel";
-import PerformanceSection from "./home/PerformanceSection";
-import Header from "./Header";
-import BettingAssistantProvider from "./ai-bot/BettingAssistantProvider";
+import React from "react";
+import Header from "@/components/Header";
 import FixtureList from "./Fixtures/FixtureList";
-import { BarChart, Filter, Calendar } from "lucide-react";
-import StyledCollapsible from "./CollapsibleSection"; // Import your new component
 
-const Home = () => {
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    sportType: "all",
-    league: "all",
-    timeFrame: "today",
-    date: new Date(),
-  });
-
-  const handleFilterChange = (newFilters: FilterOptions) => {
-    setFilterOptions(newFilters);
-    console.log("Filters updated:", newFilters);
-  };
-
+/**
+ * Simplified Home component that just uses the Header and FixtureList
+ * without the tabs interface
+ */
+const Home: React.FC = () => {
   return (
-    <BettingAssistantProvider>
-      <div className="bg-background w-full min-h-screen">
-        <Header />
+    <div className="bg-gray-50 min-h-screen">
+      {/* Use your existing Header component */}
+      <Header />
 
-        <main className="container px-4 py-6 mx-auto">
-          <StyledCollapsible
-            title="Today's Betting Tips"
-            icon={Filter}
-            defaultOpen={true}
-          >
-            <FilterPanel
-              onFilterChange={handleFilterChange}
-              sportTypes={[
-                "Football",
-                "Basketball",
-                "Tennis",
-                "Hockey",
-                "Baseball",
-              ]}
-              leagues={["Premier League", "NBA", "ATP", "NHL", "MLB"]}
-              timeFrames={["Today", "Tomorrow", "This Week"]}
-              initialFilters={filterOptions}
-            />
-          </StyledCollapsible>
+      <main className="container px-4 py-6 mx-auto">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">
+            Today's Fixtures
+          </h1>
+          <p className="text-gray-600">
+            All football matches scheduled for today
+          </p>
+        </div>
 
-          <StyledCollapsible
-            title="Performance Tracker"
-            icon={BarChart}
-          >
-            <PerformanceSection
-              successRate={68}
-              winLossRatio="34-16"
-              profitMargin="+12.5%"
-              timePeriods={[
-                "Last Week",
-                "Last Month",
-                "Last 3 Months",
-                "All Time",
-              ]}
-            />
-          </StyledCollapsible>
-
-          <StyledCollapsible title="Fixtures" icon={Calendar}>
-            <FixtureList />
-          </StyledCollapsible>
-        </main>
-
-        <footer className="bg-background text-muted-foreground p-4 text-sm text-center border-t">
-          <div className="container mx-auto">
-            <p>
-              © {new Date().getFullYear()} Betting Tips App. All
-              rights reserved.
-            </p>
-          </div>
-        </footer>
-      </div>
-    </BettingAssistantProvider>
+        <div className="p-6 bg-white rounded-lg shadow">
+          <FixtureList />
+        </div>
+      </main>
+    </div>
   );
 };
 

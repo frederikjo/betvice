@@ -1,14 +1,28 @@
+// src/components/Header.tsx
 import React, { useState, useEffect } from "react";
-import { Sun, Moon } from "lucide-react";
+import {
+  Sun,
+  Moon,
+  BarChart,
+  Filter,
+  ChevronDown,
+} from "lucide-react";
 import { Button } from "./ui/button";
 import BettingAssistantButton from "./ai-bot/BettingAssistantButton";
 import BettingAssistant from "./ai-bot/BettingAssistant";
-import BetviseLogo from "../assets/BetviseLogo.svg";
 import Icon from "./ui/Icon";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +47,11 @@ const Header = () => {
     }
   };
 
+  // Navigation handlers
+  const handleNavigate = (path: string) => {
+    navigate(path);
+  };
+
   return (
     <>
       <header
@@ -43,14 +62,45 @@ const Header = () => {
         }`}
       >
         <div className="container flex items-center justify-between px-4 py-3 mx-auto">
-          <Icon
-            icon="BetviseLogo"
-            width="120"
-            height="60"
-            className="hover:opacity-90 transition-opacity cursor-pointer"
-          />
+          <div className="flex items-center gap-4">
+            {/* Logo */}
+            <Icon
+              icon="BetviseLogo"
+              width="120"
+              height="60"
+              className="hover:opacity-90 transition-opacity cursor-pointer"
+              onClick={() => handleNavigate("/")}
+            />
+
+            {/* Navigation Dropdown */}
+          </div>
 
           <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="text-betvise-blue hover:text-betvise-berry flex items-center gap-1"
+                >
+                  <Icon icon="Menu" className="w-5 h-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56">
+                <DropdownMenuItem
+                  onClick={() => handleNavigate("/performance")}
+                >
+                  <BarChart className="w-4 h-4 mr-2" />
+                  <span>Performance Tracker</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleNavigate("/betting-tips")}
+                >
+                  <Filter className="w-4 h-4 mr-2" />
+                  <span>Today's Betting Tips</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <BettingAssistantButton />
             <Button
               variant="ghost"
